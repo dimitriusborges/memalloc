@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "arena.h": "c",
+        "cstdint": "cpp"
+    }
+}
