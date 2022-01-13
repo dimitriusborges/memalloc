@@ -8,7 +8,7 @@ Arena allocation uses a simple linear memory block, where every new allocation o
 
 We use a single array as our memory bank, where we control its size and current free position:
 
-![image](https://user-images.githubusercontent.com/2237507/149237402-adad57bf-bc94-4a2f-83d5-37807efed281.png)
+
 
 ```
 unsigned char mem_bank[1000];
@@ -31,7 +31,6 @@ void arena_init(Arena *arena, unsigned char *mem_bank, size_t bank_s, size_t ali
 
 Each array position represents a memory position and, when an allocation is requested, we deliver a pointer to the first free position.
 
-![image](https://user-images.githubusercontent.com/2237507/149237564-8697ff8c-a5a7-4a64-8c0d-089c64466b5c.png)
 
 ```
 void *arena_alloc(Arena *arena, size_t space){
@@ -60,7 +59,3 @@ void *arena_alloc(Arena *arena, size_t space){
     }
 }
 ```
-
-## Sources
-
-[ginberBill Memory Allocation Strategies - Linear Allocator](https://www.gingerbill.org/article/2019/02/08/memory-allocation-strategies-002/)
