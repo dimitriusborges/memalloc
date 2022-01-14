@@ -35,12 +35,12 @@ void main(){
         var1->data1, &var1->data1,
         var1->data2, &var1->data2);
 
-    printf("Data1 [%c] pos: %p\nData2 [%s] pos: %p\nData3[%d] pos: %p\n\n", 
+    printf("Data1 [%c] pos: %p\nData2 [%.5s] pos: %p\nData3[%d] pos: %p\n\n", 
         var2->data1, &var2->data1,
         var2->data2, &var2->data2,
         var2->data3, &var2->data3);
     
-    printf("Data1 [%c] pos: %p\nData2 [%s] pos: %p\nData3[%d] pos: %p\n\n", 
+    printf("Data1 [%c] pos: %p\nData2 [%.5s] pos: %p\nData3[%d] pos: %p\n\n", 
         var3->data1, &var3->data1,
         var3->data2, &var3->data2,
         var3->data3, &var3->data3);    

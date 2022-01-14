@@ -71,6 +71,5 @@ void *stack_free(Stack *stack){
     
     stack->last_offset = new_last_pos;
 
-
     return NULL;
 }

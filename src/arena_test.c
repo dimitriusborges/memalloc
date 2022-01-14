@@ -14,6 +14,13 @@ void main(){
 
     arena_init(&arena, mem_bank, mem_bank_s, __WORDSIZE/8);
 
+    fourBytes *var = arena_alloc(&arena, sizeof(fourBytes));
+    var->data[0] = 'A';
+    var->data[1] = 'B';
+    var->data[2] = 'C';
+    var->data[3] = 'D';
+    printf("\n\n");
+
     SixteenBytes *var1 = arena_alloc(&arena, sizeof(SixteenBytes));
     var1->data1 = 128;
     var1->data2 = 256;
@@ -31,6 +38,9 @@ void main(){
     memset(var3->data2, 0x42, 5);
     var3->data3 = 2;
     printf("\n\n");
+
+    printf("Data [%s] pos: %p\n\n",
+    var->data, &var->data);
 
     printf("Data1 [%ld] pos: %p\nData2 [%ld] pos: %p\n\n",
         var1->data1, &var1->data1,

@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include<inttypes.h>
 
+typedef struct fourB{
+    char data[4];
+}fourBytes;
 typedef struct sevenB{
     char data1;
     char data2[5];

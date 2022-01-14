@@ -6,9 +6,7 @@ Arena allocation uses a simple linear memory block, where every new allocation o
 
 ## Implementation
 
-We use a single array as our memory bank, where we control its size and current free position:
-
-
+We use a single array as our memory bank. We control its size and current free position:
 
 ```
 unsigned char mem_bank[1000];
@@ -29,14 +27,14 @@ void arena_init(Arena *arena, unsigned char *mem_bank, size_t bank_s, size_t ali
 
 ```
 
-Each array position represents a memory position and, when an allocation is requested, we deliver a pointer to the first free position.
+Each array position, that is = 1 Byte,  represents a memory position and, when an allocation is requested, we deliver a pointer to the first free position.
 
 
 ```
 void *arena_alloc(Arena *arena, size_t space){
 
     /*
-    Process to check aligment and return the next free position accordingly 
+    Process to check aligment, based on given WORDSIZE, and return the next free position accordingly 
     */
     uintptr_t free_pos = (uintptr_t)arena->mem_bank + (uintptr_t)arena->offset;
     uintptr_t best_pos = align(free_pos, arena->align);
@@ -58,4 +56,34 @@ void *arena_alloc(Arena *arena, size_t space){
         return NULL;
     }
 }
+```
+
+And the free request frees the entire mem bank at once
+
+```
+void free_all(Arena *arena){
+    arena->offset = 0;
+
+    memset(arena->mem_bank, 0, arena->bank_s);
+}
+```
+
+In fact, all we do is manipulate the array, using an pointer (offset) to control the next free position. When a alloc is requested, we deliver this position and set the offset + allocated_size positions.
+
+Empty mem block:
+```
+ ___ ___ ___ ___ ___ ___
+|___|___|___|___|___|___|
+^
+| 
+offset=0
+```
+
+After allocing 4 bytes for str "ABCD":
+```
+ ___ ___ ___ ___ ___ ___
+|_A_|_B_|_C_|_D_|___|___|
+                ^
+                | 
+                offset=4
 ```

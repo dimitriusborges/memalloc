@@ -18,7 +18,7 @@ uintptr_t align(uintptr_t curr_pos, size_t align_bytes_s){
     if (diff != 0){
         
         align += word_s - diff;
-        printf("Current position isn't wordsize. Moving %lu positions to align\n", word_s - diff);
+        printf("Current position isn't wordsize (%lu bytes). Moving %lu positions to align\n", word_s,  word_s - diff);
     }
 
     printf("Best position is:%lx \n", align);
