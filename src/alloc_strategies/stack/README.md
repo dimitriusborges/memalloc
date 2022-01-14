@@ -90,7 +90,7 @@ void *stack_free(Stack *stack){
 }
 ```
 
-The Stack allocation logic is the same as the Stack structure, we manipulate an array using two control vars: current_offset, pointing to the current free position and last_offset, ponting to the begining of the last block allocated: 
+The Stack allocation logic is pretty much the same as the Stack structure, we manipulate an array using two control vars: current_offset, pointing to the current free position and last_offset, ponting to the begining of the last block allocated: 
 
 Empty mem block:
 ```
@@ -102,29 +102,31 @@ curr_offset=0
 last_offset=0
 ```
 
-Since we have to control both current and last position, we use a header to save, along the allocated data, the last address used. So, after allocing 2 bytes for str "AB":
+Since we always have to control both current free position and last used position, we use a header, allocated along the true data, the address used before this allocation. So, after allocing 2 bytes for str "AB":
 ```
- ______ ___ ___ ___ ___ ___ ___
-|_h->0_|_A_|_B_|___|___|___|___|
+ ________ ___ ___ ___ ___ ___ ___
+|_h->0x0_|_A_|_B_|___|___|___|___|
 ^              ^
 |              | 
 last_offset=0  curr_offset=3    
 ```
 
-We are, in fact, using 3 bytes, 1 for the header, 2 for the data.
+We are, in fact, using 3 bytes, 2 for the data and 1 for the header
 
 
-After allocing 4 more bytes for 2 str: "CD" and "EF":
+And after allocing 4 more bytes for 2 str: "CD" and "EF":
 
 ```
  ________ ___ ___ ________ ___ ___ ________ ___ ___ ___ ___
 |_h->0x0_|_A_|_B_|_h->0x0_|_C_|_D_|_h->0x3_|_E_|_F_|___|___|
-                                  ^              ^
-                                  |              | 
-                                  last_offset=6  curr_offset=9    
+                                  ^                ^
+                                  |                | 
+                                  last_offset=6    curr_offset=9    
 ```
 
-And, if a free request occurs:
+We need the header because last_offset only points to the imediate last used position, but the header points to the one **before**, so we can keep track of every position used.
+
+So, when a free request occurs:
 
 ```
  ________ ___ ___ ________ ___ ___ ___ ___ ___ ___ ___
@@ -133,3 +135,5 @@ And, if a free request occurs:
                  |                | 
                  last_offset=3    curr_offset=6    
 ```
+
+The curr_offset point to the value on last_offset and the last_offset checks the new last position, that is saved on the header, and points to it.
