@@ -26,7 +26,7 @@ typedef struct StackType{
 
 void stack_init(Stack *stack, unsigned char *mem_bank, size_t bank_s, size_t align_bytes);
 
-void *stack_alloc(Stack *stack, size_t space);
+void *stack_alloc(Stack *stack, size_t n_bytes_alloc);
 
 void *stack_free(Stack *stack);
 

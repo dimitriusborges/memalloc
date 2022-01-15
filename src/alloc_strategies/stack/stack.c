@@ -22,8 +22,8 @@ void stack_init(Stack *stack, unsigned char *mem_bank, size_t bank_s, size_t ali
 
 }
 
-void *stack_alloc(Stack *stack, size_t space){
-    printf("allocating %lu bytes\n", space);
+void *stack_alloc(Stack *stack, size_t n_bytes_alloc){
+    printf("allocating %lu bytes\n", n_bytes_alloc);
 
     uintptr_t free_pos = (uintptr_t)stack->mem_bank + (uintptr_t)stack->curr_offset;
     uintptr_t best_pos = align(free_pos, stack->align);
@@ -31,17 +31,17 @@ void *stack_alloc(Stack *stack, size_t space){
 
     printf("Idx for alloc: %lu\n", pos_idx);
 
-    if(stack->curr_offset + HEADER_S + space<= stack->bank_s){
+    if(stack->curr_offset + HEADER_S + n_bytes_alloc<= stack->bank_s){
         void *free_pos_ptr = &stack->mem_bank[pos_idx];
 
         StackHeader *header = (StackHeader *) free_pos_ptr;
         header->last_free = &stack->mem_bank[stack->last_offset];
 
         stack->last_offset = pos_idx;
-        stack->curr_offset = pos_idx + HEADER_S + space;
+        stack->curr_offset = pos_idx + HEADER_S + n_bytes_alloc;
 
         free_pos_ptr += HEADER_S;
-        memset(free_pos_ptr, 0, space);
+        memset(free_pos_ptr, 0, n_bytes_alloc);
         printf("Pointing pos %p for allocating. New free pos is [%lu] %p\n", 
         free_pos_ptr, stack->curr_offset, &stack->mem_bank[stack->curr_offset]);
 

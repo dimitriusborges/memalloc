@@ -20,9 +20,9 @@ void arena_init(Arena *arena, unsigned char *mem_bank, size_t bank_s, size_t ali
     printf("Memory bank starting on position %p\n\n\n", arena->mem_bank);
 }
 
-void *arena_alloc(Arena *arena, size_t space){
+void *arena_alloc(Arena *arena, size_t n_bytes_alloc){
 
-    printf("allocating %lu bytes\n", space);
+    printf("allocating %lu bytes\n", n_bytes_alloc);
 
     uintptr_t free_pos = (uintptr_t)arena->mem_bank + (uintptr_t)arena->offset;
     uintptr_t best_pos = align(free_pos, arena->align);
@@ -30,11 +30,11 @@ void *arena_alloc(Arena *arena, size_t space){
 
     printf("Idx for alloc: %lu\n", pos_idx);
 
-    if(arena->offset + space <= arena->bank_s){
+    if(arena->offset + n_bytes_alloc <= arena->bank_s){
         void *free_pos_ptr = &arena->mem_bank[pos_idx];
-        arena->offset = pos_idx + space;
+        arena->offset = pos_idx + n_bytes_alloc;
 
-        memset(free_pos_ptr, 0, space);
+        memset(free_pos_ptr, 0, n_bytes_alloc);
 
         printf("Pointing pos %p for allocating. New free pos is [%lu] %p\n", 
         free_pos_ptr, arena->offset, &arena->mem_bank[arena->offset]);

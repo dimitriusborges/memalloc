@@ -14,7 +14,7 @@ typedef struct ArenaType{
 
 void arena_init(Arena *arena, unsigned char *mem_bank, size_t bank_s, size_t align_bytes);
 
-void *arena_alloc(Arena *arena, size_t space);
+void *arena_alloc(Arena *arena, size_t n_bytes_alloc);
 
 void free(Arena *arena);
 
