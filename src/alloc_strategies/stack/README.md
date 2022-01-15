@@ -6,7 +6,7 @@ Stack allocation uses a simple linear memory block as a stack, where every new a
 
 ## Implementation
 
-We use a single array as our memory bank. We control its size, current free position and the last position used, so we can go back to it when a free request is done:
+We use a single array as our memory bank. We control its size, current free position and the last position used, so we can go back to it when a free operation is requested:
 
 ```
 unsigned char mem_bank[1000];
@@ -102,19 +102,18 @@ curr_offset=0
 last_offset=0
 ```
 
-Since we always have to control both current free position and last used position, we use a header, allocated along the true data, the address used before this allocation. So, after allocing 2 bytes for str "AB":
+Since we always have to control both current free position and last used position, we use a header, allocated along the true data, to keep track of the address used before this allocation. So, after allocing 2 bytes for str "AB":
 ```
  ________ ___ ___ ___ ___ ___ ___
 |_h->0x0_|_A_|_B_|___|___|___|___|
-^              ^
-|              | 
-last_offset=0  curr_offset=3    
+^                ^
+|                | 
+last_offset=0    curr_offset=3    
 ```
 
-We are, in fact, using 3 bytes, 2 for the data and 1 for the header
+We are, in fact, using 3 bytes, 2 for the data and 1 for the header (that points to "nowhere" since it is the beginning of the mem block).
 
-
-And after allocing 4 more bytes for 2 str: "CD" and "EF":
+After allocing 4 more bytes for 2 str: "CD" and "EF":
 
 ```
  ________ ___ ___ ________ ___ ___ ________ ___ ___ ___ ___

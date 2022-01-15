@@ -14,7 +14,7 @@ Three strategies are presented:
 
 - Arena
 - Stack
-- Poll
+- Pool
 
 All the strategies use an Array as the memory bank and take some extra (and simplified) steps to guarantee that the memory aligment is according to a predefined word size, to avoid multiple word-sized memory readings by the processor.
 
