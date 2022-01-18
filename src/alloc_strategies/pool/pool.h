@@ -20,3 +20,5 @@ void* pool_alloc(Pool *pool, size_t n_bytes_alloc);
 void pool_free_all(Pool *pool);
 
 void pool_free(Pool *pool, void *addr_to_free);
+
+void print_pool_addrs(PoolPointer *head);

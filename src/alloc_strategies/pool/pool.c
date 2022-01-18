@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "pool.h"
 #include <assert.h>
+#include "../mem_align.h"
 
 void pool_free_all(Pool *pool){
 
@@ -14,8 +15,23 @@ void pool_free_all(Pool *pool){
 
 }
 
+void print_pool_addrs(PoolPointer *head){
+    PoolPointer *ptr = head;
+    int n_chunks = 1;
+
+    printf("\nPool chunks addr:\n-------------------------------------\n");
+    while(ptr != NULL){
+        printf("Free chunk %d at pos %p\n", n_chunks++, ptr);
+        ptr = ptr->next;
+    }
+    printf("-------------------------------------\n\n");
+}
+
 void pool_init(Pool *pool, unsigned char *mem_bank, size_t bank_s, size_t chunk_size, size_t align_bytes){
-        
+
+    //since pool always give a chunk as a mem addr to use, we are forcing the chunks to be a multiple of wordsize
+    assert(is_word_sized(chunk_size, align_bytes) && "Chunk size isn't a multiple of the wordsize given as it should be");
+
     pool->mem_bank = mem_bank;
     pool->bank_s = bank_s;
     pool->chunk_size = chunk_size;
@@ -26,14 +42,20 @@ void pool_init(Pool *pool, unsigned char *mem_bank, size_t bank_s, size_t chunk_
 
     pool_free_all(pool);
 
-    printf("Creating Pool with %ld positions...\n", pool->number_chunks);
+    printf("Creating Pool with %ld chunks...\n", pool->number_chunks);
 
-    printf("Memory pool going from %p to %p\n\n\n", pool->mem_bank, pool->head);
+    print_pool_addrs(pool->head);
 }
 
 void* pool_alloc(Pool *pool, size_t n_bytes_alloc){
 
-    assert(n_bytes_alloc <= pool->chunk_size && "Size asked for allocation is bigger than a chunk! Can't allocate");
+    printf("Allocating %lu bytes\n", n_bytes_alloc);
+    
+    if(n_bytes_alloc > pool->chunk_size){
+        printf("Size asked for allocation is bigger than a chunk! Can't allocate\n\n"); 
+        return NULL;
+    } 
+    
     
     PoolPointer *free_pos = pool->head;
     
@@ -42,7 +64,10 @@ void* pool_alloc(Pool *pool, size_t n_bytes_alloc){
         return NULL;
     }
 
+    
     pool->head = pool->head->next;
+
+    printf("Pointing pos %p for alloctaing. New free pos is %p\n", free_pos, pool->head);
 
     return free_pos;
 }
@@ -61,10 +86,10 @@ void pool_free(Pool *pool, void *addr_to_free){
         return;
     }
 
-    printf("Freeing pos: %p\n", addr_to_free);
+    printf("Freeing pos: %p\n\n", addr_to_free);
     PoolPointer *node = (PoolPointer *) addr_to_free;
     memset(node, 0, pool->chunk_size);
 
     node->next = pool->head;
-    pool->head->next = node;
+    pool->head = node;
 }

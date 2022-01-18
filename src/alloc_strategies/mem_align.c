@@ -1,5 +1,7 @@
 #include "mem_align.h"
 #include<stdio.h>
+#include <stddef.h>
+#include <stdint.h>
 
 /*
 Modern computer architectures will always read memory at its “word size” 
@@ -24,4 +26,8 @@ uintptr_t align(uintptr_t curr_pos, size_t align_bytes_s){
     printf("Best position is:%lx \n", align);
     return align;
     
+}
+
+int is_word_sized(size_t target, size_t wordsize) {
+    return target % wordsize == 0;
 }

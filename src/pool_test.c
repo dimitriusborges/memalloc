@@ -1,25 +1,58 @@
 #include <stdio.h>
 #include "alloc_strategies/pool/pool.h"
+#include "alloc_strategies/mem_align.h"
+#include "alloc_strategies/vars.h"
 
 // gcc pool_test.c alloc_strategies/pool/*.c alloc_strategies/*.c -o output/pool
 void main(){
+
     Pool pool;
-    size_t mem_bank_s = 1024;
+    size_t mem_bank_s = 80;
     unsigned char mem_bank[mem_bank_s];
 
     pool_init(&pool, mem_bank, mem_bank_s, 8, __WORDSIZE/8);
 
-    PoolPointer *ptr = pool.head;
+    fourBytes *var1 = pool_alloc(&pool, sizeof(fourBytes));
+    var1->data[0] = 'A';
+    var1->data[1] = 'B';
+    var1->data[2] = 'C';
+    var1->data[3] = 'D';
+    printf("\n\n");     
 
-    // while(ptr != NULL){
-    //     printf("Chunk at pos: %p\n", ptr);
-    //     ptr = ptr->next;
-    // }
+    SevenBytes *var2 = pool_alloc(&pool, sizeof(SevenBytes));
+    var2->data1 = 'b';
+    var2->data2[0] = 'E';
+    var2->data2[1] = 'F';
+    var2->data2[2] = 'G';
+    var2->data2[3] = 'H';
+    var2->data2[4] = 'I';
+    var2->data3 = 8;
+    printf("\n\n");
+    
+    fourBytes *var3 = pool_alloc(&pool, sizeof(fourBytes));
+    var3->data[0] = 'J';
+    var3->data[1] = 'K';
+    var3->data[2] = 'L';
+    var3->data[3] = 'M';
+    printf("\n\n");     
 
-    void *free_pos = pool_alloc(&pool, 8);
+    SixteenBytes *noVar = pool_alloc(&pool, sizeof(SixteenBytes));
 
-    printf("Free position: %p\n", free_pos);
+    pool_free(&pool, var2);
 
-    pool_free(&pool, free_pos);
+
+    print_pool_addrs(pool.head);
+
+    SevenBytes *var4 = pool_alloc(&pool, sizeof(SevenBytes));
+    var2->data1 = 'b';
+    var2->data2[0] = 'E';
+    var2->data2[1] = 'F';
+    var2->data2[2] = 'G';
+    var2->data2[3] = 'H';
+    var2->data2[4] = 'I';
+    var2->data3 = 8;
+    printf("\n\n");
+
+
 
 }
