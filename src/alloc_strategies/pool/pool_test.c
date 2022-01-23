@@ -1,9 +1,8 @@
 #include <stdio.h>
-#include "alloc_strategies/pool/pool.h"
-#include "alloc_strategies/mem_align.h"
-#include "alloc_strategies/vars.h"
+#include "pool.h"
+#include "../vars.h"
 
-// gcc pool_test.c alloc_strategies/pool/*.c alloc_strategies/*.c -o output/pool
+// gcc pool_test.c pool.c ../mem_align.c -o pool
 void main(){
 
     Pool pool;

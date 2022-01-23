@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#include "alloc_strategies/arena/arena.h"
-#include "alloc_strategies/vars.h"
+#include "arena.h"
+#include "../vars.h"
 
- // gcc arena_test.c alloc_strategies/arena/*.c alloc_strategies/*.c -o output/arena
+ //gcc arena_test.c arena.c ../mem_align.c -o arena
 
 
 void main(){

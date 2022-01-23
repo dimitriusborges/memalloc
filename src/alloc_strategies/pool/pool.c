@@ -40,10 +40,10 @@ void pool_init(Pool *pool, unsigned char *mem_bank, size_t bank_s, size_t chunk_
 
     memset(pool->mem_bank, 0, pool->bank_s);
 
+    //create the linked-list
     pool_free_all(pool);
 
     printf("Creating Pool with %ld chunks...\n", pool->number_chunks);
-
     print_pool_addrs(pool->head);
 }
 

@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#include "alloc_strategies/stack/stack.h"
-#include "alloc_strategies/vars.h"
+#include "stack.h"
+#include "../vars.h"
 
- // gcc stack_test.c alloc_strategies/stack/*.c alloc_strategies/*.c -o output/stack
+ // gcc stack_test.c stack.c ../mem_align.c -o stack
 
 void main(){
 
